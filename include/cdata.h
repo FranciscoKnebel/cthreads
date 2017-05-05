@@ -31,3 +31,7 @@ typedef struct s_TCB {
 } TCB_t;
 
 #endif
+
+struct control {
+	int initiated;
+}
