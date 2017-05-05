@@ -5,23 +5,22 @@
 #include "cthread.h"
 #include "support.h"
 
-struct control controlBlock;
-controlBlock.initiated = FALSE;
+struct control controlBlock = { .initiated = FALSE };
 
 int ccreate (void* (*start)(void*), void *arg, int prio) {
   if (!controlBlock.initiated) {
     initiateLibrary();
   }
 
-  TCB_t* newThread;
+  // TCB_t* newThread;
 
   // getcontext();
   // makecontext();
 
   // if error
-  // return -1;
+  return -1;
 
-  return newThread->tid;
+  // return newThread->tid;
 };
 
 int csetprio(int tid, int prio) {
@@ -90,6 +89,6 @@ int cidentify (char *name, int size) {
   }
 
   /* TO DO */
-  
+
   return -1;
 };

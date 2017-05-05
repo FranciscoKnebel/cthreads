@@ -34,4 +34,7 @@ typedef struct s_TCB {
 
 struct control {
 	int initiated;
-}
+};
+
+
+void initiateLibrary();

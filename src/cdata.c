@@ -6,7 +6,7 @@
 #include "support.h"
 
 void initiateLibrary() {
-  TCB_t* mainThread;
+  // TCB_t* mainThread;
 
   /* TO DO */
-}
+};
