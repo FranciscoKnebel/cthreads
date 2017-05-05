@@ -8,26 +8,27 @@
 #  1. Cuidado com a regra "clean" para não apagar o "support.o"
 #
 # OBSERVAR que as variáveis de ambiente consideram que o Makefile está no diretótio "cthread"
-# 
+#
 
 CC=gcc
+CFLAGS=-Wall -g
 LIB_DIR=./lib
 INC_DIR=./include
 BIN_DIR=./bin
 SRC_DIR=./src
 
-all: regra1 regra2 regran
+all: $(BIN_DIR)/cdata.o $(BIN_DIR)/cthread.o $(BIN_DIR)/support.o
+	ar rcs $(LIB_DIR)/libcthread.a $(BIN_DIR)/cdata.o $(BIN_DIR)/cthread.o $(BIN_DIR)/support.o
 
-regra1: #dependências para a regra1
-	$(CC) -o $(BIN_DIR)regra1 $(SRC_DIR)regra1.c -Wall
+$(BIN_DIR)/cdata.o: $(SRC_DIR)/cdata.c
+	$(CC) $(CFLAGS) -c -o $(BIN_DIR)/cdata.o -I$(INC_DIR) $(SRC_DIR)/cdata.c
 
-regra2: #dependências para a regra2
-	$(CC) -o $(BIN_DIR)regra2 $(SRC_DIR)regra2.c -Wall
+$(BIN_DIR)/cthread.o: $(SRC_DIR)/cthread.c
+	$(CC) $(CFLAGS) -c -o $(BIN_DIR)/cthread.o -I$(INC_DIR) $(SRC_DIR)/cthread.c
 
-regran: #dependências para a regran
-	$(CC) -o $(BIN_DIR)regran $(SRC_DIR)regran.c -Wall
-
+# copy support.o, cleans files and then copies support.o back into $(BIN_DIR)
 clean:
+	cp $(BIN_DIR)/support.o support.o
 	rm -rf $(LIB_DIR)/*.a $(BIN_DIR)/*.o $(SRC_DIR)/*~ $(INC_DIR)/*~ *~
-
-
+	cp support.o $(BIN_DIR)/support.o
+	rm support.o

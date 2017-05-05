@@ -3,7 +3,7 @@
 
 	Support Library
 	Vers. 1.0 - 10/08/16
-	
+
 ********************************************************************/
 
 #ifndef	__SUPPORTE_H__
@@ -17,7 +17,7 @@ struct	sFilaNode2 {
 struct sFila2 {
 	struct	sFilaNode2 *it;		// Iterador para varrer a lista
 	struct	sFilaNode2 *first;	// Primeiro elemento da lista
-	struct	sFilaNode2 *last;	// Último elemento da lista
+	struct	sFilaNode2 *last;	// Ãšltimo elemento da lista
 };
 
 typedef struct sFilaNode2	NODE2;
@@ -26,7 +26,7 @@ typedef struct sFilaNode2 *	PNODE2;
 typedef struct sFila2 *		PFILA2;
 
 /*-------------------------------------------------------------------
-Função:	Informa a versao da biblioteca
+FunÃ§Ã£o:	Informa a versao da biblioteca
 Ret:	Numero da versao
 -------------------------------------------------------------------*/
 #define Year	2017
@@ -35,33 +35,33 @@ Ret:	Numero da versao
 
 
 /*-------------------------------------------------------------------
-Função:	Inicializa uma estrutura de dados do tipo FILA2
+FunÃ§Ã£o:	Inicializa uma estrutura de dados do tipo FILA2
 Ret:	==0, se conseguiu
-	!=0, caso contrário (erro ou fila vazia)
+	!=0, caso contrÃ¡rio (erro ou fila vazia)
 -------------------------------------------------------------------*/
 int	CreateFila2(PFILA2 pFila);
 
 
 /*-------------------------------------------------------------------
-Função:	Seta o iterador da fila no primeiro elemento
+FunÃ§Ã£o:	Seta o iterador da fila no primeiro elemento
 Ret:	==0, se conseguiu
-	!=0, caso contrário (erro ou fila vazia)
+	!=0, caso contrÃ¡rio (erro ou fila vazia)
 -------------------------------------------------------------------*/
 int	FirstFila2(PFILA2 pFila);
 
 /*-------------------------------------------------------------------
-Função:	Seta o iterador da fila no último elemento
+FunÃ§Ã£o:	Seta o iterador da fila no Ãºltimo elemento
 Ret:	==0, se conseguiu
-	!=0, caso contrário (erro ou fila vazia)
+	!=0, caso contrÃ¡rio (erro ou fila vazia)
 -------------------------------------------------------------------*/
 int	LastFila2(PFILA2 pFila);
 
 /*-------------------------------------------------------------------
-Função:	Seta o iterador da fila para o próximo elemento
+FunÃ§Ã£o:	Seta o iterador da fila para o prÃ³ximo elemento
 Ret:	==0, se conseguiu
-	!=0, caso contrário (erro, fila vazia ou chegou ao final da fila)
+	!=0, caso contrÃ¡rio (erro, fila vazia ou chegou ao final da fila)
 	Fila vazia		=> -1
-	Iterador inválido	=> -2
+	Iterador invÃ¡lido	=> -2
 	Atingido final da fila	=> -3
 -------------------------------------------------------------------*/
 #define	NXTFILA_VAZIA		1
@@ -70,51 +70,47 @@ Ret:	==0, se conseguiu
 int	NextFila2(PFILA2 pFila);
 
 /*-------------------------------------------------------------------
-Função:	Retorna o conteúdo do nodo endereçado pelo iterador da lista "pFila"
-Ret:	Ponteiro válido, se conseguiu
-	NULL, caso contrário (erro, lista vazia ou iterador invalido)
+FunÃ§Ã£o:	Retorna o conteÃºdo do nodo endereÃ§ado pelo iterador da lista "pFila"
+Ret:	Ponteiro vÃ¡lido, se conseguiu
+	NULL, caso contrÃ¡rio (erro, lista vazia ou iterador invalido)
 -------------------------------------------------------------------*/
 void 	*GetAtIteratorFila2(PFILA2 pFila);
 
 /*-------------------------------------------------------------------
-Função:	Coloca o ponteiro "content" no final da fila "pFila"
+FunÃ§Ã£o:	Coloca o ponteiro "content" no final da fila "pFila"
 Ret:	==0, se conseguiu
-	!=0, caso contrário (erro)
+	!=0, caso contrÃ¡rio (erro)
 -------------------------------------------------------------------*/
 int	AppendFila2(PFILA2 pFila, void *content);
 
 /*-------------------------------------------------------------------
-Função:	Coloca o ponteiro "content" logo após o elemento 
+FunÃ§Ã£o:	Coloca o ponteiro "content" logo apÃ³s o elemento
 	correntemente apontado pelo iterador da fila "pFila"
 Ret:	==0, se conseguiu
-	!=0, caso contrário (erro)
+	!=0, caso contrÃ¡rio (erro)
 	Fila vazia		=> -1
-	Iterador inválido	=> -2
+	Iterador invÃ¡lido	=> -2
 -------------------------------------------------------------------*/
 #define	INSITER_VAZIA	1
 #define	INSITER_INVAL	2
 int	InsertAfterIteratorFila2(PFILA2 pFila, void *content);
 
 /*-------------------------------------------------------------------
-Função:	Remove o elemento indicado pelo iterador, da lista "pFila"
+FunÃ§Ã£o:	Remove o elemento indicado pelo iterador, da lista "pFila"
 Ret:	==0, se conseguiu
-	!=0, caso contrário (erro)
+	!=0, caso contrÃ¡rio (erro)
 	Fila vazia		=> -1
-	Iterador inválido	=> -2
+	Iterador invÃ¡lido	=> -2
 -------------------------------------------------------------------*/
 #define	DELITER_VAZIA	1
 #define	DELITER_INVAL	2
 int	DeleteAtIteratorFila2(PFILA2 pFila);
 
 /*-------------------------------------------------------------------
-Função:	Gera um número pseudo-aleatório entre 0 e 65535
-Ret:	Número gerado
+FunÃ§Ã£o:	Gera um nÃ¡mero pseudo-aleatÃ³rio entre 0 e 65535
+Ret:	NÃºmero gerado
 -------------------------------------------------------------------*/
 unsigned int	Random2();
 
 
 #endif
-
-
-
-
