@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
 
 #include "cdata.h"
 #include "cthread.h"
@@ -9,7 +11,7 @@ struct control controlBlock = { .initiated = FALSE };
 
 int ccreate (void* (*start)(void*), void *arg, int prio) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   // TCB_t* newThread;
@@ -25,7 +27,7 @@ int ccreate (void* (*start)(void*), void *arg, int prio) {
 
 int csetprio(int tid, int prio) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   /* TO DO */
@@ -35,7 +37,7 @@ int csetprio(int tid, int prio) {
 
 int cyield(void) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   /* TO DO */
@@ -45,7 +47,7 @@ int cyield(void) {
 
 int cjoin(int tid) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   /* TO DO */
@@ -55,7 +57,7 @@ int cjoin(int tid) {
 
 int csem_init(csem_t *sem, int count) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   /* TO DO */
@@ -65,7 +67,7 @@ int csem_init(csem_t *sem, int count) {
 
 int cwait(csem_t *sem) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   /* TO DO */
@@ -75,7 +77,7 @@ int cwait(csem_t *sem) {
 
 int csignal(csem_t *sem) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   /* TO DO */
@@ -85,7 +87,7 @@ int csignal(csem_t *sem) {
 
 int cidentify (char *name, int size) {
   if (!controlBlock.initiated) {
-    initiateLibrary();
+    cinit();
   }
 
   /* TO DO */

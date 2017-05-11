@@ -1,16 +1,16 @@
 //
-// Philosophers.c: Este programa implementa um dos classicos de programação
-//                 concorrente: a janta dos filósofos.
-//                 O objetivo deste programa é testar a implementação do
+// Philosophers.c: Este programa implementa um dos classicos de programaï¿½ï¿½o
+//                 concorrente: a janta dos filï¿½sofos.
+//                 O objetivo deste programa ï¿½ testar a implementaï¿½ï¿½o do
 //                 micro kernel desenvolvido na disciplina INF01142
 //
 // Primitivas testadas: ccreate, cjoin, cyield, cwait e csignal.
-// 
-// Este programa é basedo na solução de Tanenbaum apresentada no livro
+//
+// Este programa ï¿½ basedo na soluï¿½ï¿½o de Tanenbaum apresentada no livro
 // "Modern Operating System" (Prentice Hall International).
 //
 // Disclamer: este programa foi desenvolvido para auxiliar no desenvolvimento
-//            de testes para o micronúcleo. NÃO HÁ garantias de estar correto.
+//            de testes para o micronï¿½cleo. Nï¿½O Hï¿½ garantias de estar correto.
 
 
 #include <stdio.h>
@@ -30,23 +30,23 @@
 #define		EATING		       2
 #define		DONE		       3
 
-int 		state[N], End[N]; 
+int 		state[N], End[N];
 csem_t	        mutex;
 csem_t		s[N];
 char		status[N*2]={'H',' ','H',' ',
                              'H',' ','H',' ',
                              'H','\0'};
-                               
- 
+
+
 void sleepao(void){
      int i = 0;
- 
+
      i = rand()%5 + 1;
      for (; i<0; i--) cyield();
      return;
 }
 
-void	test(int i) 
+void	test(int i)
 {
 	if (state[i] == HUNGRY && state[LEFT] != EATING &&
 	    state[RIGHT] != EATING) {
@@ -61,7 +61,7 @@ void	test(int i)
 }
 
 
-void	put_forks(int i) 
+void	put_forks(int i)
 {
 	cwait(&mutex);
 	state[i] = THINKING;
@@ -71,43 +71,43 @@ void	put_forks(int i)
 	test(RIGHT);
 	csignal(&mutex);
 	cyield();       /* If scheduling is FIFO without preemption */
-	                /* We allow another philosopher to run      */	
+	                /* We allow another philosopher to run      */
 	return;
 }
 
- 
-void	take_forks(int i) 
+
+void	take_forks(int i)
 {
 	cwait(&mutex);
 	state[i] = HUNGRY;
 	*(status+2*i) = 'H';
-	printf("%s \n", status);	
+	printf("%s \n", status);
 	test(i);
 	csignal(&mutex);
-	cwait(&s[i]); 	
-	return;	
+	cwait(&s[i]);
+	return;
 }
 
- 
-void	think_eat(void) 
+
+void	think_eat(void)
 {
 	sleepao();
-	return;		
+	return;
 }
 
 
- 
+
 void *Philosophers(void *arg) {
 	int i;
-	
+
 	i= (int)arg;
-		
+
 	while (End[i]<10) {
 		think_eat();        /* Philosophe goes to think          */
 		take_forks(i);      /* acquire two forks or blocks       */
 		think_eat();        /* Philosophe goes to eat            */
-		put_forks(i);       /* put back the forks                */	
-		End[i]=End[i]+1;	
+		put_forks(i);       /* put back the forks                */
+		End[i]=End[i]+1;
 	}
 
 	*(status+2*i)='D';
@@ -117,23 +117,23 @@ void *Philosophers(void *arg) {
 
 
 //*************************** MAIN ***********************
- 
+
 int	main(int argc, char *argv[]) {
 	int 	ThreadId[N];
 	int	i,ret;
-        	
+
         srand((unsigned)time(NULL));
 
         csem_init(&mutex, 1);
-	
-	for(i = 0; i < N; i++) 
+
+	for(i = 0; i < N; i++)
 	   if (csem_init(&s[i], 0)) {
 	      printf("# Semaphore initialization error...\n");
 	      exit(0);
 	   }
 
 	for(i = 0; i < N; i++) {
-	   if (ThreadId[i] = ccreate(Philosophers, (void *)i)) {
+	   if (ThreadId[i] = ccreate(Philosophers, (void *)i, 0)) {
 	      exit(0);
 	   }
 	}
@@ -143,5 +143,5 @@ int	main(int argc, char *argv[]) {
 	for(i = 0; i < N; i++)
 	   ret = cjoin(ThreadId[i]);
 
-        printf("\n# Diner ends... All philosophers goes to sleep...\n\n\n");	   
+        printf("\n# Diner ends... All philosophers goes to sleep...\n\n\n");
 }

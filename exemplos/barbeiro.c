@@ -5,7 +5,7 @@
 //             micro kernel desenvolvido na disciplina INF01142
 //
 // Primitivas testadas: ccreate, cjoin, cyield, cwait e csignal.
-// 
+//
 // Este programa é basedo na solução de Tanenbaum apresentada no livro
 // "Modern Operating System" (Prentice Hall International 2 ed.).
 //
@@ -32,7 +32,7 @@ int    waiting = 0;
 
 void sleepao() {
      int i = 0;
- 
+
      i = rand()%5 + 1;
      for (; i<0; i--) cyield();
      return;
@@ -59,7 +59,7 @@ void* barber(void* arg)
 }
 
 void* customer(void* arg)
-{   
+{
    while(time(NULL) < end_time) {
       cwait(&mutex);
       if (waiting < CHAIRS) {
@@ -88,11 +88,11 @@ int main(int argc, char **argv)
     csem_init(&barbers, 1);
     csem_init(&mutex, 1);
 
-    tidBarber = ccreate (barber, (void *) NULL);
+    tidBarber = ccreate (barber, (void *) NULL, 0);
     if (tidBarber < 0 )
        perror("Erro na criação do Barbeiro...\n");
 
-    tidCustomer = ccreate (customer, (void *) NULL);
+    tidCustomer = ccreate (customer, (void *) NULL, 0);
     if (tidCustomer < 0 )
        perror("Erro na criação do gerador de clientes...\n");
 
@@ -101,7 +101,3 @@ int main(int argc, char **argv)
 
     exit(0);
 }
-    
-    
-
-

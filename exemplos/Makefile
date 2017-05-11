@@ -1,6 +1,6 @@
 #
 # Makefile para programas exemplo
-# 
+#
 
 CC=gcc
 LIB_DIR=../lib
@@ -27,10 +27,6 @@ prodcons: prodcons.c $(LIB_DIR)/libcthread.a
 
 series: series.c $(LIB_DIR)/libcthread.a
 	$(CC) -o series series.c -L$(LIB_DIR) -lcthread -lm -Wall
-	
+
 clean:
 	rm -rf exemplo mandel teste_vetor barbeiro filosofos prodcons series *.o *~
-
-
-
-

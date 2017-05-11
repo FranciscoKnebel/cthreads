@@ -18,9 +18,6 @@
 #define	PROCST_BLOQ	3
 #define	PROCST_TERMINO	4
 
-#define TRUE 0
-#define FALSE -1
-
 /* NÃO ALTERAR ESSA struct */
 typedef struct s_TCB {
 	int		tid; 		// identificador da thread
@@ -30,11 +27,28 @@ typedef struct s_TCB {
 	ucontext_t 	context;	// contexto de execução da thread (SP, PC, GPRs e recursos)
 } TCB_t;
 
-#endif
+
+/* Definido pelo grupo */
+#define TRUE 0
+#define FALSE -1
+
+#define DEBUG FALSE
 
 struct control {
 	int initiated;
+
+	FILA2 allThreads;
+
+	PFILA2 blockedThreads;
+
+	PFILA2 prio0_Threads;
+	PFILA2 prio1_Threads;
+	PFILA2 prio2_Threads;
+	PFILA2 prio3_Threads;
 };
 
+extern struct control controlBlock;
 
-void initiateLibrary();
+void cinit();
+
+#endif
