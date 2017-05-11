@@ -112,7 +112,7 @@ void *Philosophers(void *arg) {
 
 	*(status+2*i)='D';
 	state[i] = DONE;
-	return;
+	return 0;
 }
 
 
@@ -133,7 +133,7 @@ int	main(int argc, char *argv[]) {
 	   }
 
 	for(i = 0; i < N; i++) {
-	   if (ThreadId[i] = ccreate(Philosophers, (void *)i, 0)) {
+	   if ((ThreadId[i] = ccreate(Philosophers, (void *)i, 0))) {
 	      exit(0);
 	   }
 	}
@@ -144,4 +144,6 @@ int	main(int argc, char *argv[]) {
 	   ret = cjoin(ThreadId[i]);
 
         printf("\n# Diner ends... All philosophers goes to sleep...\n\n\n");
+
+  return 0;
 }

@@ -21,7 +21,7 @@ void *func(void *arg){
        vetor[inc] = (int)arg;
        inc++;
        if ( (inc % 20) == 0 )
-           piyield();
+           cyield();
        else
            continue;
    }

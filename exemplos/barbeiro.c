@@ -40,7 +40,7 @@ void sleepao() {
 
 void cut_hair(void)
 {
-    cyield(); cyield(); cyield(); cyield;
+    cyield(); cyield(); cyield(); cyield();
     return;
 }
 
@@ -55,7 +55,7 @@ void* barber(void* arg)
      cut_hair();
      csignal(&barbers);
   }
-  return;
+  return 0;
 }
 
 void* customer(void* arg)
@@ -74,7 +74,7 @@ void* customer(void* arg)
       }
       sleepao();
     }
-    return;
+    return 0;
 }
 
 int main(int argc, char **argv)
