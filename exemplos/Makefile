@@ -5,7 +5,7 @@
 CC=gcc
 LIB_DIR=../lib
 
-all: exemplo mandel teste_vetor barbeiro filosofos prodcons series
+all: exemplo mandel teste_vetor barbeiro filosofos prodcons series testSupport
 
 exemplo: exemplo.c $(LIB_DIR)/libcthread.a
 	$(CC) -o exemplo exemplo.c -L$(LIB_DIR) -lcthread -Wall
@@ -28,5 +28,8 @@ prodcons: prodcons.c $(LIB_DIR)/libcthread.a
 series: series.c $(LIB_DIR)/libcthread.a
 	$(CC) -o series series.c -L$(LIB_DIR) -lcthread -lm -Wall
 
+testSupport: testSupport.c $(LIB_DIR)/libcthread.a
+	$(CC) -o testSupport testSupport.c -L$(LIB_DIR) -lcthread -lm -Wall
+
 clean:
-	rm -rf exemplo mandel teste_vetor barbeiro filosofos prodcons series *.o *~
+	rm -rf exemplo mandel teste_vetor barbeiro filosofos prodcons series testSupport *.o *~

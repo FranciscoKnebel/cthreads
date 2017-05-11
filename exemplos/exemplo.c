@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 	id0 = ccreate(func0, (void *)&i, 0);
 	id1 = ccreate(func1, (void *)&i, 0);
 
-	printf("Eu sou a main ap�s a cria��o de ID0 e ID1\n");
+	printf("Eu sou a main após a criação de ID0 e ID1\n");
 
 	cjoin(id0);
 	cjoin(id1);

@@ -29,8 +29,8 @@ typedef struct s_TCB {
 
 
 /* Definido pelo grupo */
-#define TRUE 0
-#define FALSE -1
+#define FALSE 0
+#define TRUE 1
 
 #define DEBUG FALSE
 
@@ -49,6 +49,8 @@ struct control {
 
 extern struct control controlBlock;
 
-void cinit();
+
+int initFILA2(PFILA2 fila, int isPointer);
+int cinit(void);
 
 #endif

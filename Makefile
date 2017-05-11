@@ -16,8 +16,10 @@ LIB_DIR=./lib
 INC_DIR=./include
 BIN_DIR=./bin
 SRC_DIR=./src
+TST_DIR=./exemplos
+TST_PRG=exemplo
 
-all: $(BIN_DIR)/cdata.o $(BIN_DIR)/cthread.o $(BIN_DIR)/support.o
+all: clear $(BIN_DIR)/cdata.o $(BIN_DIR)/cthread.o $(BIN_DIR)/support.o
 	ar rcs $(LIB_DIR)/libcthread.a $(BIN_DIR)/cdata.o $(BIN_DIR)/cthread.o $(BIN_DIR)/support.o
 
 $(BIN_DIR)/cdata.o: $(SRC_DIR)/cdata.c
@@ -32,3 +34,15 @@ clean:
 	rm -rf $(LIB_DIR)/*.a $(BIN_DIR)/*.o $(SRC_DIR)/*~ $(INC_DIR)/*~ *~
 	cp support.o $(BIN_DIR)/support.o
 	rm support.o
+
+# Build tools
+dev: build
+	@echo "\n"
+	${TST_DIR}/${TST_PRG}
+	@echo "\n\nTest program ended."
+
+build: all
+	@make -C "exemplos" -s ${TST_PRG}
+
+clear:
+	clear
