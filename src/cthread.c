@@ -91,14 +91,22 @@ int cidentify (char *name, int size) {
     cinit();
   }
 
-  char *info =  "\n Douglas Lazaro S P Silva - 207305 \n Francisco Paiva Knebel - 243688 \n Guilherme Fonseca Ribeiro - 228415 \n \n";
-  int maxsize = strlen(info);
+  if (size == 0) {
+    name[0] = '\0';
 
-  if (size < maxsize)
+    return 0;
+  }
+
+  char info[] = "\n Douglas Lazaro S P Silva \t- 207305 \n Francisco Paiva Knebel \t- 243688 \n Guilherme Fonseca Ribeiro \t- 228415";
+  int length = strlen(info);
+
+  if(size < length) {
     memcpy(name, info, size);
-  else
-    memcpy(name, info, maxsize);
-  
+    name[size] = '\0';
+  } else {
+    memcpy(name, info, length);
+    name[length] = '\0';
+  }
 
   return 0;
 };
