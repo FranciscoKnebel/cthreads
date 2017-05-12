@@ -45,12 +45,12 @@ struct control {
 	PFILA2 prio1_Threads;
 	PFILA2 prio2_Threads;
 	PFILA2 prio3_Threads;
+
+	TCB_t* runningThread;
 };
 
 extern struct control controlBlock;
 
-
-int initFILA2(PFILA2 fila, int isPointer);
 int cinit(void);
 
 #endif

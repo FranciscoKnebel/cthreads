@@ -3,29 +3,13 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "cfila.h"
 #include "cdata.h"
 #include "cthread.h"
 #include "support.h"
 
-int initFILA2(PFILA2 fila, int isPointer) {
-  if(isPointer) {
-    fila = (PFILA2) malloc(sizeof(PFILA2));
-  }
-
-  if (fila == NULL) {
-    return FALSE;
-  }
-
-  if(CreateFila2(fila) == 0) {
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
 int cinit(void) {
   int check;
-  TCB_t* mainThread;
 
   /*
     Initiate control block elements
@@ -53,21 +37,30 @@ int cinit(void) {
     Creates the main thread.
     Appends it to the allThreads structure.
   */
+  TCB_t *mainThread, *thread1, *thread2;
+
   mainThread = (TCB_t*) malloc(sizeof(TCB_t));
   mainThread->tid = 0;
   mainThread->state = PROCST_EXEC;
   mainThread->ticket = 0;
 
-  AppendFila2(&controlBlock.allThreads, (void *) mainThread);
-  FirstFila2(&controlBlock.allThreads);
+  insertFILA2(&controlBlock.allThreads, (void *) mainThread);
 
-  /*TCB_t* copyThread = (TCB_t*) GetAtIteratorFila2(&controlBlock.allThreads);
+  /* Create end functions to threads*/
+  /* getcontext(&control.ended_thread);
+  control.ended_thread.uc_link = NULL;
+  control.ended_thread.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
+  control.ended_thread.uc_stack.ss_size = SIGSTKSZ;
+  makecontext(&control.ended_thread, (void (*)(void))ended_thread, 0); */
 
-  printf("%p - %p\n", mainThread, copyThread);
-  printf("%d - %d\n", mainThread->tid, copyThread->tid);
-  printf("%d - %d\n", mainThread->state, copyThread->state);
-  printf("%d - %d\n", mainThread->ticket, copyThread->ticket); */
+  /* Set Main thread as running*/
+  controlBlock.runningThread = mainThread;
 
-  /* TO DO */
+  /* Create context to main thread*/
+  /* getcontext(&main_thread->context);
+  main_thread->context.uc_link = &control.ended_thread;
+  main_thread->context.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
+  main_thread->context.uc_stack.ss_size = SIGSTKSZ; */
+
   return 0;
 };
