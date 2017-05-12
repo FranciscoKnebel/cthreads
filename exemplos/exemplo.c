@@ -26,6 +26,8 @@ int main(int argc, char *argv[]) {
 
 	int	id0, id1;
 	int i;
+	int size =120;
+	char *name;
 
 	id0 = ccreate(func0, (void *)&i, 0);
 	id1 = ccreate(func1, (void *)&i, 0);
@@ -36,6 +38,10 @@ int main(int argc, char *argv[]) {
 	cjoin(id1);
 
 	printf("Eu sou a main voltando para terminar o programa\n");
+
+	cidentify(name, size);
+
+	printf("\n Grupo 10: \n %s", name);
 
 	return 0;
 }

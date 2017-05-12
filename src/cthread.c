@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <errno.h>
 
@@ -90,7 +91,14 @@ int cidentify (char *name, int size) {
     cinit();
   }
 
-  /* TO DO */
+  char *info =  "\n Douglas Lazaro S P Silva - 207305 \n Francisco Paiva Knebel - 243688 \n Guilherme Fonseca Ribeiro - 228415 \n \n";
+  int maxsize = strlen(info);
 
-  return -1;
+  if (size < maxsize)
+    memcpy(name, info, size);
+  else
+    memcpy(name, info, maxsize);
+  
+
+  return 0;
 };
