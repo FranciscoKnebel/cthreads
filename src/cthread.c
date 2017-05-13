@@ -63,9 +63,30 @@ int cjoin(int tid) {
     cinit();
   }
 
+  TCB_t* joinThread;
+  if(searchFILA2(&controlBlock.allThreads, tid, TRUE) == TRUE) {
+    joinThread = (TCB_t*) GetAtIteratorFila2(&controlBlock.allThreads);
+  } else {
+    /* TID not found */
+    return -1;
+  }
+
+  /* runningThread é a thread procurada */
+  if (controlBlock.runningThread->tid == tid) {
+    return -2;
+  }
+
+  if(joinThread->state == PROCST_TERMINO) {
+    return 0;
+  }
+
   /* TO DO */
 
-  return -1;
+  /* Verificações de bloqueio */
+  /* Coloca thread ativa na fila de bloqueados */
+  /* troca de contexto */
+
+  return 0;
 };
 
 int csem_init(csem_t *sem, int count) {
