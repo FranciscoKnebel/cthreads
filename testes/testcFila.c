@@ -21,6 +21,7 @@ int main() {
   TCB_t *thread0, *thread1, *thread2, *thread3;
 
 	int searchTID[6] = { 0, 1, 5, 100, 2, 3 };
+	cinit();
 	PFILA2 allThreads = &controlBlock.allThreads;
 
 	// Inicializando threads

@@ -34,6 +34,8 @@ typedef struct s_TCB {
 
 #define DEBUG FALSE
 
+#define prio ticket
+
 struct control {
 	int initiated;
 
@@ -52,5 +54,7 @@ struct control {
 extern struct control controlBlock;
 
 int cinit(void);
+void insertThreadToFila(int prio, void * thread);
+int generateTID(void);
 
 #endif

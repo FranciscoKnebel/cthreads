@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <errno.h>
 
 #include "cdata.h"
+#include "cfila.h"
 #include "cthread.h"
 #include "support.h"
 
@@ -15,15 +14,28 @@ int ccreate (void* (*start)(void*), void *arg, int prio) {
     cinit();
   }
 
-  // TCB_t* newThread;
+  TCB_t* newThread;
+  newThread = (TCB_t*) malloc(sizeof(TCB_t));
+  newThread->tid = generateTID();
+  newThread->state = PROCST_APTO;
+  newThread->prio = prio;
 
-  // getcontext();
-  // makecontext();
+  getcontext(&newThread->context);
 
-  // if error
-  return -1;
+  newThread->context.uc_link = NULL;
+  newThread->context.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
+  newThread->context.uc_stack.ss_size = SIGSTKSZ;
 
-  // return newThread->tid;
+  if(newThread->context.uc_stack.ss_sp == NULL) {
+    return -1;
+  }
+
+  makecontext(&newThread->context, (void(*))start, 1, arg);
+
+  insertFILA2(&controlBlock.allThreads, (void *) newThread);
+  insertThreadToFila(prio, (void *) newThread);
+
+  return newThread->tid;
 };
 
 int csetprio(int tid, int prio) {
