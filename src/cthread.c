@@ -42,10 +42,23 @@ int csetprio(int tid, int prio) {
   if (!controlBlock.initiated) {
     cinit();
   }
+  PFILA2 allThreads = &controlBlock.allThreads;
 
-  /* TO DO */
+  if(searchFILA2(allThreads, tid, TRUE) == TRUE) {
+    
+    TCB_t* copyThread = (TCB_t*) GetAtIteratorFila2(allThreads);
 
-  return -1;
+    int oldprio = copyThread->prio;
+    copyThread->prio = prio;
+
+    removeThreadFromFila(oldprio, tid);
+
+    insertThreadToFila(prio, (void *) copyThread);
+
+    return 0;
+  }
+  else
+    return -1;
 };
 
 int cyield(void) {

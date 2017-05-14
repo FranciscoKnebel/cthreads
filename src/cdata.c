@@ -76,6 +76,25 @@ void insertThreadToFila(int prio, void * thread) {
   }
 }
 
+void removeThreadFromFila(int prio, int tid) {
+  switch (prio) {
+    case 0:
+      removeFILA2((PFILA2) &controlBlock.prio0_Threads, tid);
+      break;
+    case 1:
+      removeFILA2((PFILA2) &controlBlock.prio1_Threads, tid);
+      break;
+    case 2:
+      removeFILA2((PFILA2) &controlBlock.prio2_Threads, tid);
+      break;
+    case 3:
+      removeFILA2((PFILA2) &controlBlock.prio3_Threads, tid);
+      break;
+    default:
+      break;
+  }
+}
+
 int generateTID(void) {
 	static int globalTID = 0;
 

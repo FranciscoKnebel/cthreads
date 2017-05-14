@@ -55,6 +55,7 @@ extern struct control controlBlock;
 
 int cinit(void);
 void insertThreadToFila(int prio, void * thread);
+void removeThreadFromFila(int prio, int tid);
 int generateTID(void);
 
 #endif
