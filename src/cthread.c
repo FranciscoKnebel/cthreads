@@ -66,10 +66,22 @@ int cyield(void) {
     cinit();
   }
 
-  /* TO DO */
+  TCB_t* lastRunningThread = controlBlock.runningThread;
+  lastRunningThread->state = 1;
 
-  return -1;
+  scheduler();
+  
+  insertThreadToFila(lastRunningThread->prio, lastRunningThread);
+
+  return 0;
 };
+
+int scheduler(void){
+
+  /*TO DO*/
+  
+  return -1;
+}
 
 int cjoin(int tid) {
   if (!controlBlock.initiated) {
