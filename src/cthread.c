@@ -78,8 +78,41 @@ int cyield(void) {
 
 int scheduler(void){
 
+  if (FirstFila2((PFILA2) &controlBlock.prio0_Threads) == 0) 
+  {
+    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio0_Threads);
+    nextRunningThread->state = 2;
+    dispatcher(nextRunningThread);
+    return 0;
+  }
+  else if (FirstFila2((PFILA2) &controlBlock.prio1_Threads) == 0) 
+  {
+    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio1_Threads);
+    nextRunningThread->state = 2;
+    dispatcher(nextRunningThread);
+    return 0;
+  }
+  else if (FirstFila2((PFILA2) &controlBlock.prio2_Threads) == 0) 
+  {
+    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio2_Threads);
+    nextRunningThread->state = 2;
+    dispatcher(nextRunningThread);
+    return 0;
+  }
+  else if (FirstFila2((PFILA2) &controlBlock.prio3_Threads) == 0) 
+  {
+    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio3_Threads);
+    nextRunningThread->state = 2;
+    dispatcher(nextRunningThread);
+    return 0;
+  }
+  else
+    return -1;
+}
+
+int dispatcher(TCB_t* nextRunningThread){
+
   /*TO DO*/
-  
   return -1;
 }
 
