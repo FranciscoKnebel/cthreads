@@ -152,9 +152,15 @@ int csem_init(csem_t *sem, int count) {
     cinit();
   }
 
-  /* TO DO */
+  sem->count = count;
+  sem->fila = (PFILA2) malloc(sizeof(PFILA2));
 
-  return -1;
+  if (CreateFila2(sem->fila) == 0)
+  {
+    return 0;
+  }
+  else
+    return -1;
 };
 
 int cwait(csem_t *sem) {
