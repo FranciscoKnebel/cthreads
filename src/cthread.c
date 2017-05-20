@@ -45,20 +45,18 @@ int csetprio(int tid, int prio) {
   PFILA2 allThreads = &controlBlock.allThreads;
 
   if(searchFILA2(allThreads, tid, TRUE) == TRUE) {
-    
     TCB_t* copyThread = (TCB_t*) GetAtIteratorFila2(allThreads);
 
     int oldprio = copyThread->prio;
     copyThread->prio = prio;
 
     removeThreadFromFila(oldprio, tid);
-
     insertThreadToFila(prio, (void *) copyThread);
 
     return 0;
-  }
-  else
+  } else {
     return -1;
+  }
 };
 
 int cyield(void) {
@@ -67,47 +65,33 @@ int cyield(void) {
   }
 
   TCB_t* lastRunningThread = controlBlock.runningThread;
-  lastRunningThread->state = 1;
+  lastRunningThread->state = PROCST_APTO;
 
   scheduler();
-  
+
   insertThreadToFila(lastRunningThread->prio, lastRunningThread);
 
   return 0;
 };
 
 int scheduler(void){
+  TCB_t* nextRunningThread;
 
-  if (FirstFila2((PFILA2) &controlBlock.prio0_Threads) == 0) 
-  {
-    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio0_Threads);
-    nextRunningThread->state = 2;
-    dispatcher(nextRunningThread);
-    return 0;
-  }
-  else if (FirstFila2((PFILA2) &controlBlock.prio1_Threads) == 0) 
-  {
-    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio1_Threads);
-    nextRunningThread->state = 2;
-    dispatcher(nextRunningThread);
-    return 0;
-  }
-  else if (FirstFila2((PFILA2) &controlBlock.prio2_Threads) == 0) 
-  {
-    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio2_Threads);
-    nextRunningThread->state = 2;
-    dispatcher(nextRunningThread);
-    return 0;
-  }
-  else if (FirstFila2((PFILA2) &controlBlock.prio3_Threads) == 0) 
-  {
-    TCB_t* nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio3_Threads);
-    nextRunningThread->state = 2;
-    dispatcher(nextRunningThread);
-    return 0;
-  }
-  else
+  if (FirstFila2((PFILA2) &controlBlock.prio0_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio0_Threads);
+  } else if (FirstFila2((PFILA2) &controlBlock.prio1_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio1_Threads);
+  } else if (FirstFila2((PFILA2) &controlBlock.prio2_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio2_Threads);
+  } else if (FirstFila2((PFILA2) &controlBlock.prio3_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio3_Threads);
+  } else {
     return -1;
+  }
+
+  nextRunningThread->state = PROCST_EXEC;
+  dispatcher(nextRunningThread);
+  return 0;
 }
 
 int dispatcher(TCB_t* nextRunningThread){
@@ -155,12 +139,11 @@ int csem_init(csem_t *sem, int count) {
   sem->count = count;
   sem->fila = (PFILA2) malloc(sizeof(PFILA2));
 
-  if (CreateFila2(sem->fila) == 0)
-  {
+  if (CreateFila2(sem->fila) == 0) {
     return 0;
-  }
-  else
+  } else {
     return -1;
+  }
 };
 
 int cwait(csem_t *sem) {
