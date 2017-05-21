@@ -47,15 +47,40 @@ int cinit(void) {
   insertFILA2(&controlBlock.allThreads, (void *) mainThread);
 
   /*
+    Set ending function for all created threads
+  */
+  getcontext(&controlBlock.endThread);
+  controlBlock.endThread.uc_link = NULL;
+  controlBlock.endThread.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
+  controlBlock.endThread.uc_stack.ss_size = SIGSTKSZ;
+  makecontext(&controlBlock.endThread, (void (*)(void))endThread, 0);
+
+  /*
     Create context to main thread
     Set Main thread as running
   */
   getcontext(&mainThread->context);
+  mainThread->context.uc_link =  &controlBlock.endThread;
+  mainThread->context.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
+  mainThread->context.uc_stack.ss_size = SIGSTKSZ;
 
   controlBlock.runningThread = mainThread;
 
   return 0;
 };
+
+void endThread(void){
+	getcontext(&controlBlock.endedThread);
+
+  // Delete thread from blocking threads
+
+	controlBlock.runningThread->state = PROCST_TERMINO;
+	#if DEBUG
+  	printf("TID: %i has ended. \n", controlBlock.runningThread->tid);
+	#endif
+
+	scheduler();
+}
 
 void insertThreadToFila(int prio, void * thread) {
   switch (prio) {

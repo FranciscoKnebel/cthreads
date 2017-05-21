@@ -22,7 +22,7 @@ int ccreate (void* (*start)(void*), void *arg, int prio) {
 
   getcontext(&newThread->context);
 
-  newThread->context.uc_link = NULL;
+  newThread->context.uc_link = &controlBlock.endThread;
   newThread->context.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
   newThread->context.uc_stack.ss_size = SIGSTKSZ;
 
@@ -79,12 +79,16 @@ int scheduler(void){
 
   if (FirstFila2((PFILA2) &controlBlock.prio0_Threads) == 0) {
     nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio0_Threads);
+    removeThreadFromFila(0, nextRunningThread->tid);
   } else if (FirstFila2((PFILA2) &controlBlock.prio1_Threads) == 0) {
     nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio1_Threads);
+    removeThreadFromFila(1, nextRunningThread->tid);
   } else if (FirstFila2((PFILA2) &controlBlock.prio2_Threads) == 0) {
     nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio2_Threads);
+    removeThreadFromFila(2, nextRunningThread->tid);
   } else if (FirstFila2((PFILA2) &controlBlock.prio3_Threads) == 0) {
     nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio3_Threads);
+    removeThreadFromFila(3, nextRunningThread->tid);
   } else {
     return -1;
   }
