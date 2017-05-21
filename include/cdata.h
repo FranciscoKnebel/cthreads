@@ -60,4 +60,7 @@ void insertThreadToFila(int prio, void * thread);
 void removeThreadFromFila(int prio, int tid);
 int generateTID(void);
 
+int scheduler(void);
+int dispatcher(TCB_t *nextRunningThread);
+
 #endif

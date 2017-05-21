@@ -20,8 +20,6 @@ typedef struct s_sem {
 int ccreate (void* (*start)(void*), void *arg, int prio);
 int csetprio(int tid, int prio);
 int cyield(void);
-int scheduler(void);
-int dispatcher(TCB_t *nextRunningThread);
 int cjoin(int tid);
 int csem_init(csem_t *sem, int count);
 int cwait(csem_t *sem);

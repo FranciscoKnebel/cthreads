@@ -74,36 +74,6 @@ int cyield(void) {
   return 0;
 };
 
-int scheduler(void){
-  TCB_t* nextRunningThread;
-
-  if (FirstFila2((PFILA2) &controlBlock.prio0_Threads) == 0) {
-    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio0_Threads);
-    removeThreadFromFila(0, nextRunningThread->tid);
-  } else if (FirstFila2((PFILA2) &controlBlock.prio1_Threads) == 0) {
-    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio1_Threads);
-    removeThreadFromFila(1, nextRunningThread->tid);
-  } else if (FirstFila2((PFILA2) &controlBlock.prio2_Threads) == 0) {
-    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio2_Threads);
-    removeThreadFromFila(2, nextRunningThread->tid);
-  } else if (FirstFila2((PFILA2) &controlBlock.prio3_Threads) == 0) {
-    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio3_Threads);
-    removeThreadFromFila(3, nextRunningThread->tid);
-  } else {
-    return -1;
-  }
-
-  nextRunningThread->state = PROCST_EXEC;
-  dispatcher(nextRunningThread);
-  return 0;
-}
-
-int dispatcher(TCB_t* nextRunningThread){
-
-  /*TO DO*/
-  return -1;
-}
-
 int cjoin(int tid) {
   if (!controlBlock.initiated) {
     cinit();
