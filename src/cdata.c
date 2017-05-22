@@ -47,15 +47,40 @@ int cinit(void) {
   insertFILA2(&controlBlock.allThreads, (void *) mainThread);
 
   /*
+    Set ending function for all created threads
+  */
+  getcontext(&controlBlock.endThread);
+  controlBlock.endThread.uc_link = NULL;
+  controlBlock.endThread.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
+  controlBlock.endThread.uc_stack.ss_size = SIGSTKSZ;
+  makecontext(&controlBlock.endThread, (void (*)(void))endThread, 0);
+
+  /*
     Create context to main thread
     Set Main thread as running
   */
   getcontext(&mainThread->context);
+  mainThread->context.uc_link =  &controlBlock.endThread;
+  mainThread->context.uc_stack.ss_sp = (char*) malloc(SIGSTKSZ);
+  mainThread->context.uc_stack.ss_size = SIGSTKSZ;
 
   controlBlock.runningThread = mainThread;
 
   return 0;
 };
+
+void endThread(void){
+	getcontext(&controlBlock.endedThread);
+
+  // Delete thread from blocking threads
+
+	controlBlock.runningThread->state = PROCST_TERMINO;
+	#if DEBUG
+  	printf("TID: %i has ended. \n", controlBlock.runningThread->tid);
+	#endif
+
+	scheduler();
+}
 
 void insertThreadToFila(int prio, void * thread) {
   switch (prio) {
@@ -99,4 +124,34 @@ int generateTID(void) {
 	static int globalTID = 0;
 
 	return ++globalTID;
+}
+
+int scheduler(void) {
+  TCB_t* nextRunningThread;
+
+  if (FirstFila2((PFILA2) &controlBlock.prio0_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio0_Threads);
+    removeThreadFromFila(0, nextRunningThread->tid);
+  } else if (FirstFila2((PFILA2) &controlBlock.prio1_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio1_Threads);
+    removeThreadFromFila(1, nextRunningThread->tid);
+  } else if (FirstFila2((PFILA2) &controlBlock.prio2_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio2_Threads);
+    removeThreadFromFila(2, nextRunningThread->tid);
+  } else if (FirstFila2((PFILA2) &controlBlock.prio3_Threads) == 0) {
+    nextRunningThread = (TCB_t*) GetAtIteratorFila2((PFILA2) &controlBlock.prio3_Threads);
+    removeThreadFromFila(3, nextRunningThread->tid);
+  } else {
+    return -1;
+  }
+
+  nextRunningThread->state = PROCST_EXEC;
+  dispatcher(nextRunningThread);
+  return 0;
+}
+
+int dispatcher(TCB_t* nextRunningThread){
+
+  /*TO DO*/
+  return -1;
 }

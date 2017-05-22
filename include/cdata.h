@@ -49,13 +49,18 @@ struct control {
 	PFILA2 prio3_Threads;
 
 	TCB_t* runningThread;
+	ucontext_t endThread;
 };
 
 extern struct control controlBlock;
 
 int cinit(void);
+void endThread(void);
 void insertThreadToFila(int prio, void * thread);
 void removeThreadFromFila(int prio, int tid);
 int generateTID(void);
+
+int scheduler(void);
+int dispatcher(TCB_t *nextRunningThread);
 
 #endif
