@@ -70,7 +70,7 @@ int cinit(void) {
 };
 
 void endThread(void){
-	getcontext(&controlBlock.endedThread);
+	getcontext(&controlBlock.endThread);
 
   // Delete thread from blocking threads
 

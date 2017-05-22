@@ -125,14 +125,16 @@ int cwait(csem_t *sem) {
     cinit();
   }
 
+  TCB_t* RunningThread = controlBlock.runningThread;
+
   if(sem->count > 0){
     sem->count = 0;
     return 0;
   }
   else{
-        if(AppendFila2(sem->fila, (void *)control.running_thread)==0){
+        if(AppendFila2(sem->fila, (void *) RunningThread)==0){
             sem->count--;
-            control.running_thread->state = PROCST_BLOQ;
+            RunningThread->state = PROCST_BLOQ;
             scheduler();
             return 0;
         }
@@ -157,6 +159,7 @@ int csignal(csem_t *sem) {
     }
     DeleteAtIteratorFila2(sem->fila);
     aux->state = PROCST_APTO;
+    insertThreadToFila(aux->prio, (void *) aux);
     return 0;
   }
 };
