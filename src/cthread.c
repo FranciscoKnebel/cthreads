@@ -125,19 +125,40 @@ int cwait(csem_t *sem) {
     cinit();
   }
 
-  /* TO DO */
-
-  return -1;
+  if(sem->count > 0){
+    sem->count = 0;
+    return 0;
+  }
+  else{
+        if(AppendFila2(sem->fila, (void *)control.running_thread)==0){
+            sem->count--;
+            control.running_thread->state = PROCST_BLOQ;
+            scheduler();
+            return 0;
+        }
+  }
+    return -1;
 };
 
 int csignal(csem_t *sem) {
   if (!controlBlock.initiated) {
     cinit();
   }
-
-  /* TO DO */
-
-  return -1;
+  sem->count++;
+  if (sem->count>0){
+    return 0;
+  }
+  else{
+    FirstFila2(sem->fila);
+    TCB_t *aux;
+    aux = GetAtIteratorFila2(sem->fila);
+    if (aux==NULL){
+        return -1;
+    }
+    DeleteAtIteratorFila2(sem->fila);
+    aux->state = PROCST_APTO;
+    return 0;
+  }
 };
 
 int cidentify (char *name, int size) {
