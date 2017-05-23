@@ -151,7 +151,12 @@ int scheduler(void) {
 }
 
 int dispatcher(TCB_t* nextRunningThread){
+	TCB_t* currentThread = controlBlock.runningThread;
+  	currentThread->state = PROCST_APTO;
 
-  /*TO DO*/
-  return -1;
+  	swapcontext(&currentThread->context, &nextRunningThread->context);
+  	insertThreadToFila(currentThread->prio, (void *) currentThread);
+
+  	controlBlock.runningThread = nextRunningThread;
+  	return 0;
 }

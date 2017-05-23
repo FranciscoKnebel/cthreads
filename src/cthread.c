@@ -67,9 +67,8 @@ int cyield(void) {
   TCB_t* lastRunningThread = controlBlock.runningThread;
   lastRunningThread->state = PROCST_APTO;
 
-  scheduler();
-
   insertThreadToFila(lastRunningThread->prio, lastRunningThread);
+  scheduler();
 
   return 0;
 };
