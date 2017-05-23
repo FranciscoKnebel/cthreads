@@ -98,8 +98,26 @@ int cjoin(int tid) {
   /* TO DO */
 
   /* Verificações de bloqueio */
+  if (searchFILA2join(controlBlock.blockedThreads, tid, TRUE) == TRUE)
+  {
+    return -3;
+  }
+
   /* Coloca thread ativa na fila de bloqueados */
+  TCB_t* currentThread = controlBlock.runningThread;
+  currentThread->state = PROCST_BLOQ;
+
+  Pjoin * block;
+
+  block = (Pjoin*) malloc(sizeof(Pjoin));
+
+  block->waiting = currentThread;
+  block-> awaited = joinThread;
+
+  insertFILA2((PFILA2) &controlBlock.blockedThreads,(void*) block);
+
   /* troca de contexto */
+  scheduler();
 
   return 0;
 };

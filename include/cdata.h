@@ -54,6 +54,12 @@ struct control {
 
 extern struct control controlBlock;
 
+typedef struct Pjoin{
+	TCB_t* waiting;
+	TCB_t* awaited;
+} Pjoin;
+
+
 int cinit(void);
 void endThread(void);
 void insertThreadToFila(int prio, void * thread);

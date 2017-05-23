@@ -79,6 +79,16 @@ void endThread(void){
   	printf("TID: %i has ended. \n", controlBlock.runningThread->tid);
 	#endif
 
+	if (searchFILA2join(controlBlock.blockedThreads, controlBlock.runningThread->tid, TRUE) == TRUE)
+	{	
+		Pjoin* joinThread;
+		joinThread = (Pjoin*) GetAtIteratorFila2(controlBlock.blockedThreads);
+
+		TCB_t* releaseThread = joinThread->waiting;
+		releaseThread->state = PROCST_APTO;
+		insertThreadToFila(releaseThread->prio, (void *) releaseThread);
+	}
+
 	scheduler();
 }
 
@@ -154,9 +164,9 @@ int dispatcher(TCB_t* nextRunningThread){
 	TCB_t* currentThread = controlBlock.runningThread;
   	currentThread->state = PROCST_APTO;
 
-  	swapcontext(&currentThread->context, &nextRunningThread->context);
   	insertThreadToFila(currentThread->prio, (void *) currentThread);
-
   	controlBlock.runningThread = nextRunningThread;
+
+  	swapcontext(&currentThread->context, &nextRunningThread->context);
   	return 0;
 }

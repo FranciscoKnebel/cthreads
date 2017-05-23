@@ -99,3 +99,68 @@ int removeFILA2(PFILA2 fila, int tid) {
 
   return found;
 }
+
+int searchFILA2join(PFILA2 fila, int tid, int resetIterator) {
+  int found = FALSE;
+  int finished = FALSE;
+  int status;
+
+  Pjoin* node;
+
+  #if DEBUG
+    printf("\nsearchFILA2 function. Looking for TID %d.\n", tid);
+  #endif
+
+  if(resetIterator == TRUE) {
+    FirstFila2(fila);
+  }
+
+  do {
+    node = (Pjoin*) GetAtIteratorFila2(fila);
+
+    if(node == NULL) {
+      #if DEBUG
+       printf("Node NULL. Ending search.\n");
+      #endif
+
+      finished = TRUE;
+      status = -1;
+    } else {
+      #if DEBUG
+        printf("\nNode TID %d.", node->awaited->tid);
+      #endif
+
+      if(node->awaited->tid == tid) {
+        #if DEBUG
+          printf(" <-- Found it!\n");
+        #endif
+
+        found = TRUE;
+        status = found;
+      } else {
+        status = NextFila2(fila);
+
+        if(status != 0) {
+          status = -1;
+          finished = TRUE;
+
+          #if DEBUG
+            printf("\nTID %d not found.\n", tid);
+          #endif
+        }
+      }
+    }
+  } while(!found && !finished);
+
+  return status;
+}
+
+int removeFILA2join(PFILA2 fila, int tid) {
+  int found = searchFILA2join(fila, tid, TRUE);
+
+  if(found == TRUE) {
+    DeleteAtIteratorFila2(fila);
+  }
+
+  return found;
+}
