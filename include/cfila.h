@@ -4,6 +4,8 @@
 */
 
 #include "support.h"
+#include "cthread.h"
+
 
 #ifndef __cfila__
 #define __cfila__

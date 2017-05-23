@@ -11,6 +11,7 @@
 
 #include <ucontext.h>
 #include "support.h"
+#include "cthread.h"
 
 #define	PROCST_CRIACAO	0
 #define	PROCST_APTO	1

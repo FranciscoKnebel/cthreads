@@ -11,6 +11,7 @@
 #
 
 CC=gcc
+DEBUGGER=
 CFLAGS=-Wall -g
 LIB_DIR=./lib
 INC_DIR=./include
@@ -41,11 +42,11 @@ clean:
 # Build tools
 dev: build
 	@echo "\n"
-	${TST_DIR}/${TST_PRG}
+	$(DEBUGGER) ${TST_DIR}/${TST_PRG}
 	@echo "\n\nTest program ended."
 
 build: all
-	@make -C "exemplos" -s ${TST_PRG}
+	make -C "exemplos" -s ${TST_PRG}
 
 # Testes
 testes: all

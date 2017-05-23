@@ -37,15 +37,5 @@ int main(int argc, char *argv[]) {
 
 	printf("Eu sou a main voltando para terminar o programa\n");
 
-
-	/* Área de testes. Apagar antes da entrega */
-	/* int size = 150;
-	char name[size];
-
-	cidentify(name, size);
-
-	printf("\n Grupo 10: \n%s", name); */
-	/* Área de testes. Apagar antes da entrega */
-
 	return 0;
 }

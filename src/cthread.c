@@ -44,7 +44,7 @@ int csetprio(int tid, int prio) {
   }
   PFILA2 allThreads = &controlBlock.allThreads;
 
-  if(searchFILA2(allThreads, tid, TRUE) == TRUE) {
+    if(searchFILA2(allThreads, tid, TRUE) == TRUE) {
     TCB_t* copyThread = (TCB_t*) GetAtIteratorFila2(allThreads);
 
     int oldprio = copyThread->prio;
@@ -78,12 +78,17 @@ int cjoin(int tid) {
     cinit();
   }
 
+  csem_t* sem;
+
+  #if DEBUG
+    printf("CJOIN Function: TID %d\n", tid);
+  #endif
+
   TCB_t* joinThread;
   if(searchFILA2(&controlBlock.allThreads, tid, TRUE) == TRUE) {
     joinThread = (TCB_t*) GetAtIteratorFila2(&controlBlock.allThreads);
   } else {
-    /* TID not found */
-    return -1;
+    return -1; /* TID not found */
   }
 
   /* runningThread é a thread procurada */
@@ -99,7 +104,14 @@ int cjoin(int tid) {
 
   /* Verificações de bloqueio */
   /* Coloca thread ativa na fila de bloqueados */
-  /* troca de contexto */
+
+  sem = (csem_t*) malloc(sizeof(csem_t));
+  csem_init(sem, 0);
+
+  // insertFILA2((PFILA2) &controlBlock.blockedThreads, (void *) sem);
+  // AppendFila2((PFILA2) &controlBlock.blockedThreads, (void *) sem);
+
+  cwait(sem);
 
   return 0;
 };
@@ -124,41 +136,46 @@ int cwait(csem_t *sem) {
     cinit();
   }
 
-  TCB_t* RunningThread = controlBlock.runningThread;
+  TCB_t* runningThread = controlBlock.runningThread;
 
   if(sem->count > 0){
     sem->count = 0;
+
+    return 0;
+  } else if(AppendFila2(sem->fila, (void *) runningThread) == 0) {
+    sem->count--;
+    runningThread->state = PROCST_BLOQ;
+
+    scheduler();
+
     return 0;
   }
-  else{
-        if(AppendFila2(sem->fila, (void *) RunningThread)==0){
-            sem->count--;
-            RunningThread->state = PROCST_BLOQ;
-            scheduler();
-            return 0;
-        }
-  }
-    return -1;
+
+  return -1;
 };
 
 int csignal(csem_t *sem) {
   if (!controlBlock.initiated) {
     cinit();
   }
+
   sem->count++;
-  if (sem->count>0){
+
+  if (sem->count > 0) {
     return 0;
-  }
-  else{
+  } else {
     FirstFila2(sem->fila);
     TCB_t *aux;
+
     aux = GetAtIteratorFila2(sem->fila);
-    if (aux==NULL){
-        return -1;
+    if(aux == NULL) {
+      return -1;
     }
+
     DeleteAtIteratorFila2(sem->fila);
     aux->state = PROCST_APTO;
     insertThreadToFila(aux->prio, (void *) aux);
+
     return 0;
   }
 };
