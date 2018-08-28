@@ -1,5 +1,6 @@
 # CThreads
 
+TODO: partial work, do not use in production.
 
 ## Makefile
 ### make
